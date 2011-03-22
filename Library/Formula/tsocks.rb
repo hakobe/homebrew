@@ -17,7 +17,13 @@ class Tsocks <Formula
     system "autoconf"
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
     system "make && make install"
-    (etc + "tsocks.conf").write(File.read('tsocks.conf.simple.example'))
+  end
+
+  def caveats
+    s = <<-EOS.undent
+    Please create your configuration file at /etc/tsocks.conf , not /usr/local/etc/tsocks.conf
+    EOS
+    return s
   end
   
   def patches
