@@ -1,9 +1,9 @@
 require 'formula'
 
 class Gtkx < Formula
-  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.3.tar.bz2'
   homepage 'http://www.gtk.org/'
-  sha256 '336ddf3dd342cc36bee80dd4f86ef036044a2deb10cda67c8eecf5315b279ef7'
+  url 'http://ftp.gnome.org/pub/gnome/sources/gtk+/2.24/gtk+-2.24.5.tar.bz2'
+  sha256 'f355f26003b1b42b97e584bdc475189a423fdd052088ee4bbd7aa0f989815cc8'
 
   depends_on 'pkg-config' => :build
   depends_on 'glib'
@@ -13,14 +13,15 @@ class Gtkx < Formula
 
   # Used by pango, but keg-only, so needs to be added to
   # the flags for gtk+ explicitly.
-  depends_on 'cairo' if MACOS_VERSION < 10.6
+  depends_on 'cairo' if MacOS.leopard?
 
   depends_on 'pango'
   depends_on 'jasper' => :optional
   depends_on 'atk' => :optional
 
+  fails_with_llvm "Undefined symbols when linking", :build => "2326"
+
   def install
-    fails_with_llvm "Undefined symbols when linking", :build => "2326"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-glibtest"
