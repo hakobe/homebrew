@@ -1,7 +1,7 @@
 require 'formula'
 
 class Io < Formula
-  head 'https://github.com/stevedekorte/io.git'
+  head 'https://github.com/stevedekorte/io.git', :tag => '3b3b9f6faebfa964aa43b04bef8ee20b0f94a85a'
   homepage 'http://iolanguage.com/'
 
   depends_on 'cmake' => :build
@@ -33,16 +33,28 @@ class Io < Formula
 end
 
 __END__
-diff --git a/addons/Image/CMakeLists.txt b/addons/Image/CMakeLists.txt
-index a65693d..2166f1b 100644
---- a/addons/Image/CMakeLists.txt
-+++ b/addons/Image/CMakeLists.txt
-@@ -22,7 +22,7 @@ if(PNG_FOUND AND TIFF_FOUND AND JPEG_FOUND)
- 	add_definitions(-DBUILDING_IMAGE_ADDON)
+diff --git a/libs/basekit/source/Common_inline.h b/libs/basekit/source/Common_inline.h
+index 0f3680e..9dbd077 100755
+--- a/libs/basekit/source/Common_inline.h
++++ b/libs/basekit/source/Common_inline.h
+@@ -52,16 +52,17 @@ Kudos to Daniel A. Koepke
  
- 	# Additional include directories
--	include_directories(${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
-+	include_directories("/usr/X11/include" ${PNG_INCLUDE_DIR} ${TIFF_INCLUDE_DIR} ${JPEG_INCLUDE_DIR})
+ #if defined(__APPLE__) 
  
- 	# Generate the IoImageInit.c file.
- 	# Argument SHOULD ALWAYS be the exact name of the addon, case is
+-	#define NS_INLINE static __inline__ __attribute__((always_inline))
++	// #define NS_INLINE static __inline__ __attribute__((always_inline))
++	#define IO_NS_INLINE static inline
+ 
+ 	#ifdef IO_IN_C_FILE
+ 		// in .c 
+ 		#define IO_DECLARE_INLINES
+-		#define IOINLINE NS_INLINE
++		#define IOINLINE IO_NS_INLINE
+ 	#else
+ 		// in .h 
+ 		#define IO_DECLARE_INLINES
+-		#define IOINLINE NS_INLINE
++		#define IOINLINE IO_NS_INLINE
+ 	#endif 	
+ 
+ /*		
